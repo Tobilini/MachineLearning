@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+
+\title{Exercise 1.2}
+%\author{Muhammad Shaafay Saqib}
+\date{\today}
+\begin{document}
+\maketitle
+
+\section{Estimate the probabilities}
+
+\begin{align}
+    p(\text{yes}) &= \frac{6}{10} \\
+    p(\text{red} \mid \text{yes}) &= \frac{3}{6} = \frac{1}{2} \\
+    p(\text{grand tourer} \mid \text{yes}) &= \frac{2}{6} \\
+    p(\text{domestic} \mid \text{yes}) &= \frac{2}{6} \\
+    p(\text{no}) &= \frac{4}{10} \\
+    p(\text{red} \mid \text{no}) &= \frac{1}{4} \\
+    p(\text{grand tourer} \mid \text{no}) &= \frac{2}{4} \\
+    p(\text{domestic} \mid \text{no}) &= \frac{3}{4}
+\end{align}
+
+\section{Predict the probability that a car with properties \( x_1 = \text{red} \), \( x_2 = \text{grand tourer} \), \( x_3 = \text{domestic} \) will be stolen.
+}
+
+\begin{center}
+    \( p(\text{yes}) \cdot p(\text{red} \mid \text{yes}) \cdot p(\text{grand tourer} \mid \text{yes}) \cdot p(\text{domestic} \mid \text{yes}) \) \\
+    \( = \frac{6}{10} \cdot \frac{1}{2} \cdot \frac{2}{6} \cdot \frac{2}{6} \) \\
+    \( = \frac{3}{40} \)
+\end{center}
+
+\section{What are the benefits, what are the downsides of using Naive
+Bayes?}
+
+The benefits are that it does not require a lot of data and is easy to implement, being ideal for smaller datasets. It is also quite fast.
+
+The downside is that it is too dependent on data being of high quality/ Noisy data can result in incorrect results. It also assumes that all features are independent, which can limit its effectiveness where this is not the case. 
+
+\section{The extra mile: Derive Equation 1 using Bayes’ theorem, the chain rule of probabilities and the conditional independence assumption stated above.}
+
+Fill in later.
+
+
+\end{document}
