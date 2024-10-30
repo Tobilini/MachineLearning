@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+
+\title{Exercise 1.3}
+%\author{Muhammad Shaafay Saqib and Raaez}
+\date{\today}
+\begin{document}
+\maketitle
+
+\section{Formulate mathematically a loss function}
+
+   \[
+   \sum_{i < j} {1}(y_i > y_j)
+   \]
+
+   Boolean statements will evaluate to either 1 (True) or 0 (False). This loss function checks that each input is higher ranked than the following. Any correct rankings do not contribute to the loss of value, whereas incorrect ones do.
+
+
+\section{Which model is better at
+ranking? Why is the squared error problematic in this case?}
+
+The tuples that meet the condition $i < j$ are $(1,2)$, $(1,3)$ and $(2,3)$, so these will be used in the summation.
+
+For the first model $\hat{y}_1$, the loss function evaluates to the following.
+
+   \begin{multline}
+   \\
+   {1}(1 > 3) + {1}(1 > 2) + {1}(3 > 2) \\
+   = 0 + 0 + 1 \\
+   = 0
+   \end{multline}
+
+For the second model $\hat{y}_2$, the loss function evaluates to the following.
+
+   \begin{multline}
+   \\
+   {1}(2 > 3) + {1}(2 > 7) + {1}(3 > 7) \\
+   = 0 + 0 + 0 \\
+   = 0
+   \end{multline}
+
+So the second model $\hat{y}_2$ is better. Squared error is problematic because it would penalise $\hat{y}_2$ more for having a larger range despite it having a more correct ranking.
+
+\end{document}
