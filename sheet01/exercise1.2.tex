@@ -39,7 +39,44 @@ The downside is that it is too dependent on data being of high quality/ Noisy da
 
 \section{The extra mile: Derive Equation 1 using Bayes’ theorem, the chain rule of probabilities and the conditional independence assumption stated above.}
 
-Fill in later.
+\textbf{Bayes' Theorem:}
+\[
+P(A|B) = \frac{P(B|A) \cdot P(A)}{P(B)}
+\]
+
+\textbf{Chain Rule of Probability:}
+
+\[
+P(A \land B) = P(A) \cdot P(B)
+\]
+
+\textbf{Conditional Independence Assumption:}
+
+\[
+P(A \land B | C) = P(A|C) \cdot P(B|C) \quad \text{if A and B are conditionally independent given C}
+\]
+
+\textbf{Goal: Estimating conditional probability of } \( y \)
+
+\[
+P(y = k | x_1, x_2, \dots, x_n) = \frac{P(x_1, x_2, \dots, x_n | y = k) \cdot P(y = k)}{P(x_1, x_2, \dots, x_n)}
+\]
+
+Expanding the numerator using conditional independence:
+
+\[
+= \frac{P(x_1 | y = k) \cdot P(x_n | y = k)}{P(x_1, x_2, \dots, x_n)} \cdot P(y = k)
+\]
+
+Using the product rule for conditional probabilities:
+
+\[
+= \frac{1}{Z} P(y = k) \prod_{i=1}^n P(x_i | y = k) 
+\]
+
+with \( Z = P(x) = P(x_1, x_2, \dots, x_n) \).
+
 
 
 \end{document}
+
