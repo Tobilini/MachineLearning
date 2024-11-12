@@ -1,0 +1,157 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\tcbuselibrary{minted,breakable,xparse,skins}
+
+\definecolor{bg}{gray}{0.95}
+\DeclareTCBListing{mintedbox}{O{}m!O{}}{%
+  breakable=true,
+  listing engine=minted,
+  listing only,
+  minted language=#2,
+  minted style=default,
+  minted options={%
+    linenos,
+    gobble=0,
+    breaklines=true,
+    breakafter=,,
+    fontsize=\small,
+    numbersep=8pt,
+    #1},
+  boxsep=0pt,
+  left skip=0pt,
+  right skip=0pt,
+  left=25pt,
+  right=0pt,
+  top=3pt,
+  bottom=3pt,
+  arc=5pt,
+  leftrule=0pt,
+  rightrule=0pt,
+  bottomrule=2pt,
+  toprule=2pt,
+  colback=bg,
+  colframe=orange!70,
+  enhanced,
+  overlay={%
+    \begin{tcbclipinterior}
+    \fill[orange!20!white] (frame.south west) rectangle ([xshift=20pt]frame.north west);
+    \end{tcbclipinterior}},
+  #3}
+
+\title{Exercise 3.1}
+%\author{Tobias Lippold}
+\date{\today}
+\begin{document}
+\maketitle
+\section{Explain the ''kernel trick`` and why we use it in SVMs.}
+The Kernel trick is used when mapping data to a higher-dimensional feature space. This is often necessary when the data is not linearly separable in the initial, lower-dimensional feature space.
+
+Rather than explicitly mapping each data point to a higher-dimensional space through a transformation and then calculating the dot product of the transformed vectors, it is more efficient to use a kernel trick. The kernel trick evaluates the dot product directly:
+
+\begin{align}
+    K(x^\dagger,x)=\phi(x)^\dagger \phi(x).
+\end{align}
+
+\section{}
+
+\begin{align}
+    \frac{1}{n} \sum_{i=1}^n \mathscr{L}\left(y_i, \boldsymbol{w}^T \boldsymbol{x}_i\right)+\frac{\lambda}{2} \sum_{j=1}^m \boldsymbol{w}_j^2
+\end{align}
+
+where the hinge loss is given by
+
+\begin{align}
+    \mathscr{L}\left(y_i, \boldsymbol{w}^T \boldsymbol{x}_i\right)=\max \left(0,1-y_i\left(\boldsymbol{w}^T \boldsymbol{x}_i\right)\right)
+\end{align}
+
+\textbf{(a) Compute the gradient of the training objective w.r.t. $\boldsymbol{w}$ and describe the pseudocode for the gradient descent algorithm.}
+
+
+The gradient the training object is calculated as follows: For the Loss function we have:
+
+If $1-y_i\left(\boldsymbol{w}^T \boldsymbol{x}_i\right) > 0$ then the gradient is 
+\begin{align}
+    \frac{\partial \mathscr{L}\left(y_i, \boldsymbol{w}^T \boldsymbol{x}_i\right)}{\partial \boldsymbol{w}} = - y_i x_i.
+\end{align}
+If $1-y_i\left(\boldsymbol{w}^T \boldsymbol{x}_i\right) <= 0$ then the gradient is:
+\begin{align}
+    \frac{\partial \mathscr{L}\left(y_i, \boldsymbol{w}^T \boldsymbol{x}_i\right)}{\partial \boldsymbol{w}} = 0.
+\end{align}
+The regularization term:
+\begin{align}
+    \frac{\lambda}{2} \sum_{j=1}^m \boldsymbol{w}_j^2
+\end{align}
+The gradient of the regularization term with respect to $\boldsymbol{w}$ is:
+\begin{align}
+  \frac{\partial}{\partial \boldsymbol{w}}\left(\frac{\lambda}{2} \sum_{j=1}^m \boldsymbol{w}_j^2\right)=\lambda \boldsymbol{w}  
+\end{align}
+The total gradient of the training objective can be found upon insertion, of both gradients.
+\subsection{Pseudocode for the gradient descent algorithm:}
+The Pseudocode is as follows
+\begin{mintedbox}{python}
+# Initialize parameters
+w = np.zeros(m)  # Weight vector, we initialize to zero.
+lambda_ = 0.1     # Regularization parameter
+learning_rate = 0.01  # Learning rate
+num_epochs = 1000  # Number of iterations
+n = len(X_train)  # Number of training examples
+
+# Gradient Descent Loop
+for epoch in range(num_epochs):
+    grad = np.zeros_like(w)  # Initialize gradient
+    for i in range(n):
+        # Compute the hinge loss gradient for the i-th sample
+        # we need to insert now both cases for the gradient! Either gradient for 
+        # $1-y_i\left(\boldsymbol{w}^T \boldsymbol{x}_i\right) > 0$ or not
+        margin = y_train[i] * np.dot(w, X_train[i])
+        if margin < 1:  # Margin violation
+            grad -= y_train[i] * X_train[i]  # Update gradient with hinge loss gradient
+
+    # Add the regularization gradient
+    grad /= n  # Average over all examples
+    grad += lambda_ * w  # Add regularization gradient
+
+    # Update weights using the gradient
+    w -= learning_rate * grad  # Gradient descent step
+
+    # Optionally, monitor the objective function value and print it
+    if epoch % 100 == 0:
+        objective_value = (1/n) * np.sum(np.maximum(0, 1 - y_train * np.dot(X_train, w))) + (lambda_/2) * np.sum(w**2)
+        print(f"Epoch {epoch}, Objective Value: {objective_value}")
+
+# Final weight vector w is the solution
+\end{mintedbox}
+
+\subsection{(b)}
+Update the weights
+\begin{align}
+    \lambda=0.5, \eta=0.01, y=1, \boldsymbol{x}=\left[\begin{array}{l}
+1.0 \\
+0.0
+\end{array}\right], \boldsymbol{w}=\left[\begin{array}{l}
+1.0 \\
+1.0
+\end{array}\right]
+\end{align}
+$w$ after one iteration:
+\begin{align}
+    w = w - 0.01 * \left[\begin{array}{l}
+0.5 \\
+0.5
+\end{array}\right] = \left[\begin{array}{l}
+0.995 \\
+0.995
+\end{array}\right]
+\end{align}
+$w$ in second iteration. Now the gradient changes, as the margin condition is no longer satisfied. the gradient now is:
+
+I don't know if this makes sense here need to discuss.
+
+
+\begin{align}
+    
+\end{align}
+
+\end{document}
